@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
+import com.sample.android.tmdb.domain.model.FeedWrapper
 import com.sample.android.tmdb.domain.model.TmdbItem
-import com.sample.android.tmdb.ui.base.BaseNavigationFragment
-import com.sample.android.tmdb.ui.common.Content
+import com.sample.android.tmdb.ui.base.BaseFragment
+import com.sample.android.tmdb.ui.common.ErrorScreen
+import com.sample.android.tmdb.ui.common.ProgressScreen
 import com.sample.android.tmdb.ui.common.TmdbTheme
 import com.sample.android.tmdb.ui.common.composeView
+import com.sample.android.tmdb.util.Resource
 
-abstract class FeedFragment<T : TmdbItem> : BaseNavigationFragment<Nothing>() {
+abstract class FeedFragment<T : TmdbItem> : BaseFragment<Nothing>() {
 
     protected abstract val viewModel: FeedViewModel<T>
 
@@ -21,12 +25,17 @@ abstract class FeedFragment<T : TmdbItem> : BaseNavigationFragment<Nothing>() {
     ): View {
         return composeView {
             TmdbTheme {
-                Content(viewModel) { feedWrapper ->
-                    FeedScreen(
-                        feedWrapper
-                    ) { tmdbItem ->
-                        startDetailActivity(tmdbItem)
+                when (val resource = viewModel.stateFlow.collectAsState().value) {
+                    is Resource.Loading -> ProgressScreen()
+                    is Resource.Success<List<FeedWrapper>> -> {
+                        FeedScreen(resource.data) { tmdbItem ->
+                            startDetailActivity(tmdbItem)
+                        }
                     }
+                    is Resource.Error -> ErrorScreen(
+                        message = resource.message,
+                        refresh = viewModel::refresh
+                    )
                 }
             }
         }

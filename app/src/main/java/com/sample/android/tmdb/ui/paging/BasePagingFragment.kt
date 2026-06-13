@@ -10,10 +10,10 @@ import com.sample.android.tmdb.R
 import com.sample.android.tmdb.databinding.FragmentMainBinding
 import com.sample.android.tmdb.domain.model.TmdbItem
 import com.sample.android.tmdb.domain.paging.Status.RUNNING
-import com.sample.android.tmdb.ui.base.BaseNavigationFragment
+import com.sample.android.tmdb.ui.base.BaseFragment
 import com.sample.android.tmdb.widget.MarginDecoration
 
-abstract class BasePagingFragment : BaseNavigationFragment<FragmentMainBinding>() {
+abstract class BasePagingFragment : BaseFragment<FragmentMainBinding>() {
 
     protected abstract val viewModel: BasePagingViewModel
 
