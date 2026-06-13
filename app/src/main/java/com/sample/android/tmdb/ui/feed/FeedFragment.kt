@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.collectAsState
-import com.sample.android.tmdb.domain.model.FeedWrapper
 import com.sample.android.tmdb.domain.model.TmdbItem
 import com.sample.android.tmdb.ui.base.BaseFragment
 import com.sample.android.tmdb.ui.common.ErrorScreen
@@ -27,7 +26,7 @@ abstract class FeedFragment<T : TmdbItem> : BaseFragment<Nothing>() {
             TmdbTheme {
                 when (val resource = viewModel.stateFlow.collectAsState().value) {
                     is Resource.Loading -> ProgressScreen()
-                    is Resource.Success<List<FeedWrapper>> -> {
+                    is Resource.Success -> {
                         FeedScreen(resource.data) { tmdbItem ->
                             startDetailActivity(tmdbItem)
                         }
