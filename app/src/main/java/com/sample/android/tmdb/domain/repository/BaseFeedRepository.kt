@@ -6,7 +6,6 @@ import com.sample.android.tmdb.domain.model.FeedWrapper
 import com.sample.android.tmdb.domain.model.SortType
 import com.sample.android.tmdb.domain.model.TmdbItem
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
